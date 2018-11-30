@@ -14,7 +14,8 @@ class TourCategoryController extends Controller
      */
     public function index()
     {
-        //
+        $tourcategories = TourCategory::orderBy('categoryname', 'asc')->paginate(10);
+        return view('tourcategories.index')->with('tourcategories', $tourcategories);
     }
 
     /**
@@ -24,7 +25,7 @@ class TourCategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('tourcategories.create');
     }
 
     /**
@@ -35,7 +36,18 @@ class TourCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'categoryname' => 'required',
+            'categorydescription' => 'required'
+        ]);
+
+        $tourcategory = new TourCategory;
+
+        $tourcategory->categoryname = $request->input('categoryname');
+        $tourcategory->categorydescription = $request->input('categorydescription');
+        $tourcategory->save();
+
+        return redirect('/tourcategories')->with('success', 'Category is stored!');
     }
 
     /**
@@ -44,9 +56,11 @@ class TourCategoryController extends Controller
      * @param  \App\TourCategory  $tourCategory
      * @return \Illuminate\Http\Response
      */
-    public function show(TourCategory $tourCategory)
+    public function show($id)
     {
-        //
+        $tourcategory = TourCategory::find($id);
+
+        return view('tourcategories.show')->with('tourcategory', $tourcategory);
     }
 
     /**
@@ -55,9 +69,11 @@ class TourCategoryController extends Controller
      * @param  \App\TourCategory  $tourCategory
      * @return \Illuminate\Http\Response
      */
-    public function edit(TourCategory $tourCategory)
+    public function edit($id)
     {
-        //
+        $tourcategory = TourCategory::find($id);
+
+        return view('tourcategories.edit')->with('tourcategory', $tourcategory);
     }
 
     /**
@@ -67,9 +83,18 @@ class TourCategoryController extends Controller
      * @param  \App\TourCategory  $tourCategory
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, TourCategory $tourCategory)
+    public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'categoryname' => 'required'
+        ]);
+
+        $tourcategory = TourCategory::find($id);
+        $tourcategory->categoryname = $request->input('categoryname');
+
+        $tourcategory->save();
+
+        return redirect('/tourcategories')->with('success', 'Category updated!');
     }
 
     /**
@@ -78,8 +103,10 @@ class TourCategoryController extends Controller
      * @param  \App\TourCategory  $tourCategory
      * @return \Illuminate\Http\Response
      */
-    public function destroy(TourCategory $tourCategory)
+    public function destroy($id)
     {
-        //
+        $tourcategory = TourCategory::find($id);
+        $tourcategory->delete();
+        return redirect('/tourcategories')->with('success', 'Category removed');
     }
 }

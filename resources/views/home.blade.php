@@ -6,7 +6,9 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">Dashboard</div>
-                <a href="/cities/create" class="btn btn-primary">Add City</a>
+                <a href="/cities/create" class="btn btn-primary">Add a City</a>
+                <a href="/tourcategories/create" class="btn btn-primary mtop10">Add a Categorie</a>
+                <a href="/tourtypes/create" class="btn btn-primary mtop10">Add a Tourtype</a>
 
                 <div class="card-body">
                     @if (session('status'))
